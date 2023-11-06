@@ -1,8 +1,5 @@
 package org.example.person;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class Person {
     private int hitPoints;
 
@@ -22,6 +19,11 @@ public class Person {
         return y;
     }
 
+    public void setPos(int newX, int newY) {
+        x = newX;
+        y = newY;
+    }
+
     private int getHitPoints() {
         return hitPoints;
     }
@@ -29,10 +31,4 @@ public class Person {
         hitPoints -= 1;
     }
 
-    public void move(JPanel map, int dx, int dy) {
-        x += dx;
-        y += dy;
-
-
-    }
 }
