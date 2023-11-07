@@ -7,6 +7,11 @@ import java.awt.event.KeyEvent;
 
 public class ControlListener extends KeyAdapter implements ActionListener {
 
+    /**
+     * Событие на нажатие кнопки
+     * <b>step</b> = 5 для более быстрого перемещения
+     * @param e событие, которое необходимо обработать (нажание кнопки)
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         final int step = 5;
@@ -24,6 +29,10 @@ public class ControlListener extends KeyAdapter implements ActionListener {
         }
     }
 
+    /**
+     * Без этого метода перемещение не работает
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 //        System.out.println("Key pressed: " + e.getActionCommand());

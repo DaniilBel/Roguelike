@@ -7,7 +7,14 @@ import org.example.engine.render.RenderEntity;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Инициализирует начало игры и отрисовывает все объекты на поле
+ */
 public class GameWindow extends JPanel {
+
+    /**
+     * Инициализирует игру
+     */
     public GameWindow() {
         super();
         this.setFocusable(true);

@@ -1,8 +1,10 @@
 package org.example.person;
 
+/**
+ * Характеристики персонажа и методы, связанные с его перемещением
+ */
 public class Person {
     private int hitPoints;
-
     private int x;
     private int y;
 
@@ -19,15 +21,20 @@ public class Person {
         return y;
     }
 
+    /**
+     * Новая позиция персонажа
+     * @param newX - новая координата x
+     * @param newY - новая координата y
+     */
     public void setPos(int newX, int newY) {
         x = newX;
         y = newY;
     }
 
-    private int getHitPoints() {
+    public int getHitPoints() {
         return hitPoints;
     }
-    private void setHitPoints(int amount) {
+    public void setHitPoints(int amount) {
         hitPoints -= 1;
     }
 

@@ -3,6 +3,10 @@ package org.example.engine.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Инициализация окна
+ * Имеет свойства <b>WIDTH</b> - ширина окна и <b>HEIGHT</b> - высота окна
+ */
 public class GUI {
     public static final int WIDTH = 720;
     public static final int HEIGHT = 480;

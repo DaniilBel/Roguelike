@@ -4,13 +4,19 @@ import org.example.person.Person;
 
 import javax.swing.*;
 
+/**
+ * Запускает бесконечный цикл с игрой
+ * Здесь же идёт управление и отрисовка персонажа
+ */
 public class Engine {
 
-//    private final int framesPerSecond = 60;
-//    private final int timePerLoop = 1_000_000_000 / framesPerSecond;
     private static Person person;
     private static Timer timer;
 
+    /**
+     * Ставится персонаж и подключается управление им
+     * После запуска этого метода можно играть
+     */
     public static void start() {
 
         person = new Person(100, 200, 20);
@@ -19,6 +25,11 @@ public class Engine {
         timer.start();
     }
 
+    /**
+     * Передвинуть персонажа на некоторое количество пикселей
+     * @param dX - перемещение по x
+     * @param dY - перемещение по y
+     */
     public static void movePerson(int dX, int dY) {
         person.setPos(person.getX() + dX, person.getY() + dY);
     }
