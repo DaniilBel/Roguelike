@@ -5,7 +5,7 @@
 https://docs.google.com/document/d/1rfhFVE98c3pxqFoviJmWFCUJMsN6CWJr9dr7udQU5jI/edit?usp=sharing
 
 ### Композиция (диаграмма компонентов и её текстовое описание)
-![Alt text](img/Roguelike-Диаграмма компонентов.drawio.png?raw=true "Components")
+![Alt text](img/Roguelike-comp-diag.drawio.png?raw=true "Components")
 
 Диаграмма компонентов представляет собой связь между игровой логикой и интерфейсов и игровой логикой и персонажем.
 Где:
@@ -15,17 +15,17 @@ https://docs.google.com/document/d/1rfhFVE98c3pxqFoviJmWFCUJMsN6CWJr9dr7udQU5jI/
 - GameLogic за взаимодействия объектов на карте
 
 ### Логическая структура (диаграмма классов и её текстовое описание)
-![Alt text](img/Roguelike-Диаграмма классов.drawio.png?raw=true "Classes")
+![Alt text](img/Roguelike-class-diag.drawio.png?raw=true "Classes")
 В диаграмме классов описаны отношения между классами. 
 Map может жить сам по себе, но без GameWindow не сможет запустить игровой цикл.
 
 ### Взаимодействия и состояния (диаграммы последовательностей и конечных автоматов и их текстовое описание)
-![Alt text](img/Roguelike-Диаграмма последовательностей.drawio.png?raw=true "Sequence diagrams")
+![Alt text](img/Roguelike-seq-diag.drawio.png?raw=true "Sequence diagrams")
 В диаграмме последовательностей рассмотрен пример, где после появления персонажа появляется карта и монстр. 
 Персонаж может взаимодействовать с картой, получая что-то обратно (нам неважно что). 
 При нападении на монстра запускается его жизненный цикл. 
 Персонаж при нападении на монстра может погибнуть, тогда жизненный цикл персонажа и  карты прекращается, прекращая игру.
 
 
-![Alt text](img/Roguelike-Диаграмма конечных автоматов.drawio.png?raw=true "Finite state machines")
+![Alt text](img/Roguelike-fsm.drawio.png?raw=true "Finite state machines")
 Диаграмма конечных автоматов рассматривает случай нахождения персонажа на карте и взаимодействие им с монстром, предметом и перемещением
