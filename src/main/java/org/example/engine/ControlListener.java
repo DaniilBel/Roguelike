@@ -9,17 +9,18 @@ public class ControlListener extends KeyAdapter implements ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        final int step = 5;
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            Engine.move(0, -1);
+            Engine.movePerson(0, -step);
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            Engine.move(0, 1);
+            Engine.movePerson(0, step);
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            Engine.move(-1, 0);
+            Engine.movePerson(-step, 0);
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            Engine.move(1, 0);
+            Engine.movePerson(step, 0);
         }
     }
 

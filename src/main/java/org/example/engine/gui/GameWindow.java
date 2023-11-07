@@ -25,7 +25,7 @@ public class GameWindow extends JPanel {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, GUI.WIDTH, GUI.HEIGHT);
         g.setColor(Color.WHITE);
-        g.fillRect(15, 15, 300, 300);
+        g.fillRect(15, 15, GUI.WIDTH-50, GUI.HEIGHT-75);
 
         RenderEntity.render(Engine.getPerson(), g);
 

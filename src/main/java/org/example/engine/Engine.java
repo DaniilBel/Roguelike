@@ -19,7 +19,7 @@ public class Engine {
         timer.start();
     }
 
-    public static void move(int dX, int dY) {
+    public static void movePerson(int dX, int dY) {
         person.setPos(person.getX() + dX, person.getY() + dY);
     }
 
