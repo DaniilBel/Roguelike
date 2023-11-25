@@ -1,6 +1,6 @@
 package org.example.engine;
 
-import org.example.person.Person;
+import org.example.entity.Person;
 
 import javax.swing.*;
 
@@ -18,10 +18,11 @@ public class Engine {
      * После запуска этого метода можно играть
      */
     public static void start() {
+        System.out.println("Start engine");
 
         person = new Person(100, 200, 20);
 
-        timer = new Timer(100, new ControlListener());
+        timer = new Timer(1000, new ControlListener());
         timer.start();
     }
 

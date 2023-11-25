@@ -1,4 +1,4 @@
-package org.example.person;
+package org.example.entity;
 
 public class PersonTest {
 
