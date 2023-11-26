@@ -1,36 +1,44 @@
 package org.example.entity;
 
-public abstract class Entity implements Behaviour {
-    protected int x;
-    protected int y;
-    protected int hitPoints;
-    protected int strength;
-    protected int defense;
+import org.example.engine.Tile;
 
-    protected Entity(int x, int y, int hitPoints) {
-        this.x = x;
-        this.y = y;
+public class Entity extends Tile {
+    protected int hitPoints;
+//    protected int strength;
+//    protected int defense;
+
+    /**
+     * Каждая сущность будет иметь тэг для классификации монстр или игрок
+     * У каждой этой сущности помимо расположения есть хп и тп
+     * @param tag
+     * @param x
+     * @param y
+     * @param hitPoints
+     */
+    public Entity(String tag, int x, int y, int hitPoints) {
+        super(tag, x, y);
         this.hitPoints = hitPoints;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     /**
-     * Новая позиция персонажа
+     * Новая позиция сущности
      * @param newX - новая координата x
      * @param newY - новая координата y
      */
-    public abstract void setPos(int newX, int newY);
+    public void setPos(int newX, int newY) {
+        x = newX;
+        y = newY;
+    }
 
     public int getHitPoints() {
         return hitPoints;
     }
 
-    public abstract void setHitPoints(int amount);
+    /**
+     * Задание хп в зависимости от нанесенного урона или восполнененного хп
+     * @param amount - количество отнимаемого/добавляемого хп
+     */
+    public void setHitPoints(int amount) {
+
+    }
 }

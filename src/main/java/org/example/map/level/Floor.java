@@ -1,5 +1,7 @@
 package org.example.map.level;
 
+import org.example.engine.Tile;
+
 public class Floor {
     private Tile[][] floor;
 

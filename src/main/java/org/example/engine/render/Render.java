@@ -5,21 +5,21 @@ import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
 import org.example.entity.Person;
 import org.example.map.level.Floor;
-import org.example.map.level.Tile;
+import org.example.engine.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Renderer {
+public class Render {
 
     private int zoom;
 
-    public Renderer() {
+    public Render() {
         this.zoom = 2;
     }
 
     /**
-     *
+     * Персонаж помещается на центр карты
      * @param g
      */
     public void renderPlayer(Entity personData, Graphics g) {
@@ -30,10 +30,11 @@ public class Renderer {
     }
 
     /**
-     *
-     * @param floorData
-     * @param person
-     * @param g
+     * На вход подается сетка с условными обознчениями на карте
+     * По ней строится местность со стенами, полом и тп
+     * @param floorData - сетка с условными обозначениями
+     * @param person - расположение игрока. Относительно него двигается камера
+     * @param g - для отрисовки контекста
      */
     public void renderLevel(Floor floorData, Entity person, Graphics g) {
         for (int y = 0; y < floorData.getSizeY(); y++) {
@@ -62,14 +63,4 @@ public class Renderer {
 //        return tile.getY()*sprite.getHeight()*zoom + ((GUI.HEIGHT/2)-person.getY()*sprite.getHeight()*zoom-(sprite.getHeight()/2)*zoom)+person.getY()*zoom;
         return tile.getY()*zoom + ((GUI.HEIGHT/2) - person.getY()*zoom - (sprite.getHeight()/2)*zoom);
     }
-
-    /**
-     * Кастомная отрисовка персонажа
-     * @param entity - Объект, который присутствует на карте
-     * @param g - на что отрисовываем
-     */
-//    public static void render(Entity entity, Graphics g, Color color) {
-//        g.setColor(color);
-//        g.fillOval(entity.getX(), entity.getY(), 32, 32);
-//    }
 }

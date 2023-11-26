@@ -6,8 +6,9 @@ package org.example.entity;
 public class Person extends Entity {
 
     public Person(int x, int y, int hitPoints) {
-        super(x*32, y*32, hitPoints);
+        super("person", x*32, y*32, hitPoints);
     }
+
 
     @Override
     public void setPos(int newX, int newY) {
@@ -23,8 +24,4 @@ public class Person extends Entity {
         hitPoints += amount;
     }
 
-    @Override
-    public boolean shouldChasePlayer() {
-        return false;
-    }
 }

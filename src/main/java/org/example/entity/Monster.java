@@ -1,15 +1,15 @@
 package org.example.entity;
 
-public class Monster extends Entity {
+public class Monster extends Entity implements Behaviour {
 
     private Type type;
     private boolean chasePlayer;
     public Monster(Type type, int x, int y, int hitPoints) {
-        super(x, y, hitPoints);
+        super("monster", x, y, hitPoints);
         this.type = type;
         this.hitPoints = type.getHp();
-        this.strength = type.getStrength();
-        this.defense = type.getDefense();
+//        this.strength = type.getStrength();
+//        this.defense = type.getDefense();
         this.chasePlayer = type.isChase();
     }
 
