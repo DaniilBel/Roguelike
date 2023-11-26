@@ -13,29 +13,29 @@ public class Monster extends Entity implements Behaviour {
         this.chasePlayer = type.isChase();
     }
 
-    @Override
-    public void setPos(int newX, int newY) {
-        x = newX;
-        y = newY;
-    }
-
-    @Override
-    public void setHitPoints(int amount) {
-        hitPoints += amount;
-    }
-
+    /**
+     * Метод из Behaviour. Нужен для того, чтобы опеделить должен ли монст гнаться за персонажем
+     * @return - гонется монстр за персонажем или нет
+     */
     @Override
     public boolean shouldChasePlayer() {
         return chasePlayer;
     }
 
+    /**
+     * Тип монстра для указания его поведения и тп
+     * @return - Тип монстра со всеми его храктеристиками
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * Указаны все типы монстров и их характеристики
+     */
     public enum Type {
-        BAT("bat", 7, 2, 0, false),
-        RAT("rat", 11, 2, 0, true);
+        GHOST("ghost", 11, 2, 0, false);
+//        RAT("rat", 11, 2, 0, true);
 
         private String name;
         private int hp;

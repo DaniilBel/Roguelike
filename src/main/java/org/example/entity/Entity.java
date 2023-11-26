@@ -39,6 +39,6 @@ public class Entity extends Tile {
      * @param amount - количество отнимаемого/добавляемого хп
      */
     public void setHitPoints(int amount) {
-
+        hitPoints += amount;
     }
 }

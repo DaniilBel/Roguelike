@@ -37,6 +37,12 @@ public class Floor {
         return floor.length;
     }
 
+    /**
+     * Берет конкретный Tile с его тэгом и координатами
+     * @param x - координата по x
+     * @param y - координата по y
+     * @return - возвращает Tile на позиции x, y
+     */
     public Tile getTileAt(int x, int y) {
         return floor[y][x];
     }

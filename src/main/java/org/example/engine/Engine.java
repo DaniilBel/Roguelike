@@ -37,14 +37,14 @@ public class Engine {
         //monster = new Monster(Monster.Type.BAT, 200, 200, 10);
 
         currentFloor = new Floor(new String[] {
-                "########",
-                "#...#..#",
-                "#...#..#",
-                "##.##..#",
-                "#...#..#",
-                "#......#",
-                "#...#..#",
-                "########"
+                "##########",
+                "#...#....#",
+                "#...#....#",
+                "##.##....#",
+                "#...#....#",
+                "#........#",
+                "#...#....#",
+                "##########"
         });
 
         timer = new Timer(200, new ControlListener());
@@ -62,7 +62,7 @@ public class Engine {
                 person.setPos(person.getX() + dX, person.getY() + dY);
                 break;
             case "wall":
-                System.out.println("The wall");
+                System.out.println("A wall");
                 break;
         }
     }
@@ -82,6 +82,7 @@ public class Engine {
     public static Monster getMonster() {
         return monster;
     }
+
     public static Floor getCurrentFloor() {
         return currentFloor;
     }
