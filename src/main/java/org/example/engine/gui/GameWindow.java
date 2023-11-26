@@ -12,7 +12,7 @@ import java.awt.*;
  */
 public class GameWindow extends JPanel {
 
-    private Render render;
+    private final Render render;
 
     /**
      * Инициализирует игру

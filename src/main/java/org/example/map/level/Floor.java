@@ -3,8 +3,13 @@ package org.example.map.level;
 import org.example.engine.Tile;
 
 public class Floor {
+    private final int TILE_SIZE = 32;
     private Tile[][] floor;
 
+    /**
+     * Создает уровень на основе поданной сетки. Потом передается в Render для отрисовки
+     * @param levelData - сетка с условными обознчениями на карте
+     */
     public Floor(String[] levelData) {
         floor = new Tile[levelData.length][];
 
@@ -14,10 +19,10 @@ public class Floor {
             for (int x = 0; x < levelData[y].length(); x++) {
                 switch (levelData[y].charAt(x)) {
                     case '#':
-                        floor[y][x] = new Tile("wall", x*32, y*32);
+                        floor[y][x] = new Tile("wall", x*TILE_SIZE, y*TILE_SIZE);
                         break;
                     case '.':
-                        floor[y][x] = new Tile("floor", x*32, y*32);
+                        floor[y][x] = new Tile("floor", x*TILE_SIZE, y*TILE_SIZE);
                         break;
                 }
             }
@@ -32,7 +37,7 @@ public class Floor {
         return floor.length;
     }
 
-    public Tile getEntityAt(int x, int y) {
+    public Tile getTileAt(int x, int y) {
         return floor[y][x];
     }
 }

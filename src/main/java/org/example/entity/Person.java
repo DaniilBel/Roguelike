@@ -6,7 +6,7 @@ package org.example.entity;
 public class Person extends Entity {
 
     public Person(int x, int y, int hitPoints) {
-        super("person", x*32, y*32, hitPoints);
+        super("person", x, y, hitPoints);
     }
 
 

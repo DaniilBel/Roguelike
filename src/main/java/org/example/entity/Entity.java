@@ -10,10 +10,10 @@ public class Entity extends Tile {
     /**
      * Каждая сущность будет иметь тэг для классификации монстр или игрок
      * У каждой этой сущности помимо расположения есть хп и тп
-     * @param tag
-     * @param x
-     * @param y
-     * @param hitPoints
+     * @param tag - имя метки, к которой обращаемся для проверки
+     * @param x - координата x
+     * @param y - координата y
+     * @param hitPoints - количество хп
      */
     public Entity(String tag, int x, int y, int hitPoints) {
         super(tag, x, y);
