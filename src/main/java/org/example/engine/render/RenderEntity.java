@@ -1,7 +1,6 @@
 package org.example.engine.render;
 
 import org.example.entity.Entity;
-import org.example.entity.Person;
 
 import java.awt.*;
 
@@ -11,8 +10,8 @@ public class RenderEntity {
      * @param entity - Объект, который присутствует на карте
      * @param g - на что отрисовываем
      */
-    public static void render(Entity entity, Graphics g) {
-        g.setColor(Color.GREEN);
+    public static void render(Entity entity, Graphics g, Color color) {
+        g.setColor(color);
         g.fillOval(entity.getX(), entity.getY(), 32, 32);
     }
 }

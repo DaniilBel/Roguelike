@@ -1,11 +1,13 @@
 package org.example.entity;
 
-public abstract class Entity {
+public abstract class Entity implements Behaviour {
     protected int x;
     protected int y;
     protected int hitPoints;
+    protected int strength;
+    protected int defense;
 
-    Entity(int x, int y, int hitPoints) {
+    protected Entity(int x, int y, int hitPoints) {
         this.x = x;
         this.y = y;
         this.hitPoints = hitPoints;
@@ -30,5 +32,5 @@ public abstract class Entity {
         return hitPoints;
     }
 
-    public abstract void setHitPoints(int hitPoints);
+    public abstract void setHitPoints(int amount);
 }

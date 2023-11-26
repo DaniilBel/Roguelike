@@ -14,6 +14,7 @@ public class ControlListener extends KeyAdapter implements ActionListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("Key pressed");
         final int step = 5;
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             Engine.movePerson(0, -step);
