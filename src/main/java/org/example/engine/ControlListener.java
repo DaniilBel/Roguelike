@@ -1,53 +1,62 @@
 package org.example.engine;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import org.example.entity.Person;
 
-public class ControlListener extends KeyAdapter implements ActionListener {
+import java.awt.event.*;
+
+public class ControlListener implements KeyListener {
+
+    private void moveDirection(KeyEvent e, int step) {
+        int key = e.getKeyCode();
+        Person person = Engine.getPerson();
+
+        if (key == KeyEvent.VK_UP) {
+            person.setVelY(-step);
+        }
+        if (key == KeyEvent.VK_DOWN) {
+            person.setVelY(step);
+        }
+        if (key == KeyEvent.VK_LEFT) {
+            person.setVelX(-step);
+        }
+        if (key == KeyEvent.VK_RIGHT) {
+            person.setVelX(step);
+        }
+    }
 
     /**
      * Событие на нажатие кнопки
-     * <b>step</b> = 5 для более быстрого перемещения
+     * <b>step</b> = 8 для более быстрого перемещения
      * @param e событие, которое необходимо обработать (нажание кнопки)
      */
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("Key pressed");
-        final int step = 16;
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            Engine.movePerson(0, -step);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            Engine.movePerson(0, step);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            Engine.movePerson(-step, 0);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            Engine.movePerson(step, 0);
-        }
+        final int step = 4;
+        moveDirection(e, step);
     }
 
     /**
-     * Без этого метода перемещение не работает
-     * @param e the event to be processed
+     * Событие на отпускание кнопки
+     * Персонаж останавливается
+     * @param e событие, которое необходимо обработать (нажание кнопки)
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
-//        System.out.println("Key pressed: " + e.getActionCommand());
-//
-//        if (Control.isKeyDown(KeyEvent.VK_UP) || Control.isKeyDown(KeyEvent.VK_W))
-//            Engine.move(0, -1);
-//
-//        if (Control.isKeyDown(KeyEvent.VK_DOWN) || Control.isKeyDown(KeyEvent.VK_S))
-//            Engine.move(0, 1);
-//
-//        if (Control.isKeyDown(KeyEvent.VK_LEFT) || Control.isKeyDown(KeyEvent.VK_A))
-//            Engine.move(-1, 0);
-//
-//        if (Control.isKeyDown(KeyEvent.VK_RIGHT) || Control.isKeyDown(KeyEvent.VK_D))
-//            Engine.move(1, 0);
+    public void keyReleased(KeyEvent e) {
+        System.out.println("Key released");
+        final int step = 0;
+        moveDirection(e, step);
+    }
+
+    /**
+     * Событие на тык кнопки
+     * Открытие инвентаря
+     * @param e событие, которое необходимо обработать (нажание кнопки)
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("Key typed");
+        final int step = 4;
+        moveDirection(e, step);
     }
 }
