@@ -35,7 +35,8 @@ public class GameWindow extends JPanel {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, GUI.WIDTH, GUI.HEIGHT);
 
-            if (Engine.isOnStart()) {
+            if (Engine.isRunning()) {
+//                Thread.sleep(1);
                 render.renderLevel(Engine.getCurrentFloor(), Engine.getPerson(), g);
                 render.renderPlayer(Engine.getPerson(), g);
             }

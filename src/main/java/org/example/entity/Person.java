@@ -5,16 +5,35 @@ package org.example.entity;
  */
 public class Person extends Entity {
 
+    private double velX = 0;
+
+    private double velY = 0;
+
     public Person(int x, int y, int hitPoints) {
         super("person", x, y, hitPoints);
     }
 
-
-    @Override
-    public void setPos(int newX, int newY) {
-        x = newX;
-        y = newY;
+    public void smoothMoving() {
+        x += velX;
+        y += velY;
     }
+
+    public void setVelX(double velX) {
+        this.velX = velX;
+    }
+
+    public void setVelY(double velY) {
+        this.velY = velY;
+    }
+
+    public double getVelX() {
+        return velX;
+    }
+
+    public double getVelY() {
+        return velY;
+    }
+
 
     /**
      * Конкретная реализация ХП для персонажа

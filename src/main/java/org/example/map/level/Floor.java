@@ -44,6 +44,12 @@ public class Floor {
      * @return - возвращает Tile на позиции x, y
      */
     public Tile getTileAt(int x, int y) {
-        return floor[y][x];
+        try {
+            return floor[y][x];
+        } catch (Exception ignored) {
+
+        }
+        assert floor != null;
+        return floor[0][0];
     }
 }

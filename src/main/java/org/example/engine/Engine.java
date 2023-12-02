@@ -12,26 +12,67 @@ import javax.swing.*;
  * Запускает бесконечный цикл с игрой
  * Здесь же идёт управление и отрисовка персонажа
  */
-public class Engine {
+public class Engine implements Runnable {
 
     private static final int TILE_SIZE = 32;
 
     private static Person person;
     private static Monster monster;
-    private static Timer timer;
+//    private static Timer timer;
+    private static Thread thread;
 
     private static Floor currentFloor;
-    private static boolean onStart;
+    private static boolean running = false;
 
     /**
      * Ставится персонаж и подключается управление им
      * После запуска этого метода можно играть
      */
-    public static void start() {
+    public synchronized void start() {
+        if (running) {
+            System.out.println("Running is true");
+            return;
+        }
+
         System.out.println("Engine: Start engine");
         Resources.init();
         System.out.println("Engine: Init resources");
-        onStart = true;
+
+        running = true;
+        thread = new Thread(Engine.this);
+        thread.start();
+
+//        timer = new Timer(200, new ControlListener());
+//        timer.start();
+    }
+
+    private synchronized void stop() {
+        if (!running) {
+            return;
+        }
+
+        running = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.exit(1);
+    }
+
+    /**
+     * В отдельном потоке происходит весь игровй процесс
+     * Слушатель клавиш подключается в классе GameWindow
+     */
+    @Override
+    public void run() {
+        long lastTime = System.nanoTime();
+        final double ticks = 60.0;
+        double ns = 1_000_000_000 / ticks;
+        double delta = 0;
+        int updates = 0;
+        int frames = 0;
+        long timer = System.currentTimeMillis();
 
         person = new Person(2*TILE_SIZE, 1*TILE_SIZE, 20); // *32
         //monster = new Monster(Monster.Type.BAT, 200, 200, 10);
@@ -47,8 +88,26 @@ public class Engine {
                 "##########"
         });
 
-        timer = new Timer(200, new ControlListener());
-        timer.start();
+        while (running) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            if (delta >= 1) {
+                movePerson(person.getVelX(), person.getVelY());
+                updates++;
+                delta--;
+            }
+
+            frames++;
+
+            if (System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+//                System.out.println(updates + " Ticks, Fps " + frames);
+                updates = 0;
+                frames = 0;
+            }
+        }
+        stop();
     }
 
     /**
@@ -56,10 +115,11 @@ public class Engine {
      * @param dX - перемещение по x
      * @param dY - перемещение по y
      */
-    public static void movePerson(int dX, int dY) {
-        switch (getFrontTile(person, dX, dY).getTag()) {
+    public static void movePerson(double dX, double dY) {
+        switch (getFrontTile(person, dX + (double)TILE_SIZE/2, dY + (double)TILE_SIZE/2).getTag()) {
             case "floor":
-                person.setPos(person.getX() + dX, person.getY() + dY);
+//                person.setPos(person.getX() + dX, person.getY() + dY);
+                person.smoothMoving();
                 break;
             case "wall":
                 System.out.println("A wall");
@@ -67,8 +127,8 @@ public class Engine {
         }
     }
 
-    private static Tile getFrontTile(Entity entity, int x, int y) {
-        return currentFloor.getTileAt((entity.getX() + x)/TILE_SIZE, (entity.getY() + y)/TILE_SIZE);
+    private static Tile getFrontTile(Entity entity, double x, double y) {
+        return currentFloor.getTileAt((entity.getX() + (int)x)/TILE_SIZE, (entity.getY() + (int)y)/TILE_SIZE);
     }
 
     public static Person getPerson() {
@@ -86,7 +146,7 @@ public class Engine {
     public static Floor getCurrentFloor() {
         return currentFloor;
     }
-    public static boolean isOnStart() {
-        return onStart;
+    public static boolean isRunning() {
+        return running;
     }
 }

@@ -6,9 +6,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             System.out.println("Main: Init Starting");
+            Engine engine = new Engine();
 
             GUI.createWindow();
-            Engine.start();
+            engine.start();
 
             System.out.println("Main: Init Started");
         } catch (Exception e) {
