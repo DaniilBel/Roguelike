@@ -10,19 +10,23 @@ import java.awt.*;
 public class GUI {
     public static final int WIDTH = 720;
     public static final int HEIGHT = 480;
-    private static final int offset = 4;
+    public static final int SCALE = 2;
 
     private static JFrame window;
     private static GameWindow gameWindow;
 
     public static void createWindow() {
         window = new JFrame("Roguelike");
-        window.setVisible(true);
+
+        window.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        window.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+//        window.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+
+        window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Dimension dimension = toolkit.getScreenSize();
-        window.setBounds(dimension.width/offset, dimension.height/offset, WIDTH, HEIGHT);
         window.setResizable(false);
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
 
         gameWindow = new GameWindow();
         window.add(gameWindow);

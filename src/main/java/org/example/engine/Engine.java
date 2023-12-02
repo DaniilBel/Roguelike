@@ -15,12 +15,10 @@ import javax.swing.*;
 public class Engine implements Runnable {
 
     private static final int TILE_SIZE = 32;
-
     private static Person person;
-    private static Monster monster;
+    private static Monster[] monsters;
 //    private static Timer timer;
     private static Thread thread;
-
     private static Floor currentFloor;
     private static boolean running = false;
 
@@ -46,6 +44,9 @@ public class Engine implements Runnable {
 //        timer.start();
     }
 
+    /**
+     * Остановка или вылет игры
+     */
     private synchronized void stop() {
         if (!running) {
             return;
@@ -67,26 +68,28 @@ public class Engine implements Runnable {
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        final double ticks = 60.0;
+        final double ticks = 60.0; // Игра будет ограничиваться 60 тиками
         double ns = 1_000_000_000 / ticks;
-        double delta = 0;
+        double delta = 0; // Нужно для обновления внутренней игрвой логики (персонаж, монстры и тп)
         int updates = 0;
         int frames = 0;
         long timer = System.currentTimeMillis();
 
         person = new Person(2*TILE_SIZE, 1*TILE_SIZE, 20); // *32
-        //monster = new Monster(Monster.Type.BAT, 200, 200, 10);
 
         currentFloor = new Floor(new String[] {
-                "##########",
-                "#...#....#",
-                "#...#....#",
-                "##.##....#",
-                "#...#....#",
-                "#........#",
-                "#...#....#",
-                "##########"
-        });
+                "###########",
+                "#....#....#",
+                "#....#....#",
+                "##..##....#",
+                "#....#....#",
+                "#.........#",
+                "#.........#",
+                "#....#....#",
+                "###########"
+        }, new Monster(Monster.Type.GHOST, 4*TILE_SIZE, 2*TILE_SIZE));
+
+        monsters = currentFloor.getMonsters();
 
         while (running) {
             long now = System.nanoTime();
@@ -127,25 +130,45 @@ public class Engine implements Runnable {
         }
     }
 
+    /**
+     * Нужно для определения тега тайла
+     * @param entity - какой объект
+     * @param x - координата по x
+     * @param y - координата по y
+     * @return тег тайла (wall, floor и тп)
+     */
     private static Tile getFrontTile(Entity entity, double x, double y) {
         return currentFloor.getTileAt((entity.getX() + (int)x)/TILE_SIZE, (entity.getY() + (int)y)/TILE_SIZE);
     }
 
+    /**
+     * Используется в управлении персонажем и тп
+     * @return персонаж со всеми полями и инвентарём
+     */
     public static Person getPerson() {
         return person;
     }
 
-    public static void moveMonster(int dx, int dy) {
-        monster.setPos(monster.getX() + dx, monster.getY() + dy);
+    /**
+     *
+     * @return все монстры на этаже
+     */
+    public static Monster[] getMonsters() {
+        return monsters;
     }
 
-    public static Monster getMonster() {
-        return monster;
-    }
-
+    /**
+     * Текущий уровень со всеми тайлами
+     * @return возвращает текущий уровень
+     */
     public static Floor getCurrentFloor() {
         return currentFloor;
     }
+
+    /**
+     * Запущем ли основной игровой цикл
+     * @return запущена ли игра с возможностью управления персонажем
+     */
     public static boolean isRunning() {
         return running;
     }

@@ -4,8 +4,11 @@ import org.example.engine.Tile;
 
 public class Entity extends Tile {
     protected int hitPoints;
-//    protected int strength;
-//    protected int defense;
+    protected int strength;
+    protected int defense;
+
+    private int motionOffsetX;
+    private int motionOffsetY;
 
     /**
      * Каждая сущность будет иметь тэг для классификации монстр или игрок
@@ -40,5 +43,30 @@ public class Entity extends Tile {
      */
     public void setHitPoints(int amount) {
         hitPoints += amount;
+    }
+
+    public int getMotionOffsetX() {
+        return motionOffsetX;
+    }
+
+    public int getMotionOffsetY() {
+        return motionOffsetY;
+    }
+
+    public void setMotionOffset(int motionOffsetX, int motionOffsetY) {
+        this.motionOffsetX = motionOffsetX;
+        this.motionOffsetY = motionOffsetY;
+    }
+
+    public void decreaseMotionOffset() {
+        if(motionOffsetX > 0)
+            motionOffsetX-=2;
+        else if(motionOffsetX < 0)
+            motionOffsetX+=2;
+
+        if(motionOffsetY > 0)
+            motionOffsetY-=2;
+        else if(motionOffsetY < 0)
+            motionOffsetY+=2;
     }
 }
