@@ -33,12 +33,13 @@ public class GameWindow extends JPanel {
 
         try {
             g.setColor(Color.BLACK);
-            g.fillRect(0, 0, GUI.WIDTH, GUI.HEIGHT);
+            g.fillRect(0, 0, GUI.WIDTH * GUI.SCALE, GUI.HEIGHT * GUI.SCALE);
 
             if (Engine.isRunning()) {
-//                Thread.sleep(1);
+                Thread.sleep(1);
                 render.renderLevel(Engine.getCurrentFloor(), Engine.getPerson(), g);
                 render.renderPlayer(Engine.getPerson(), g);
+                render.renderMonsters(Engine.getMonsters(), Engine.getPerson(), g);
             }
 
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class GameWindow extends JPanel {
             e.printStackTrace();
         }
 
-//        revalidate();
+        revalidate();
         repaint();
     }
 }

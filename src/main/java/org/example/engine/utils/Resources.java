@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Resources {
+    // Путь, изображение
     private static HashMap<String, BufferedImage> sprites;
+//    private static HashMap<String, BufferedImage[]> animationSprites;
 
     /**
      * Инициализирует HashMap текстурами, которые имеются в папке res
@@ -20,13 +22,19 @@ public class Resources {
 
         for (File file : Objects.requireNonNull(folder.listFiles())) {
             try {
-                //TODO fix problems
                 sprites.put(file.getName().replaceAll(".png", ""), ImageIO.read(file));
             } catch (Exception e) {
                 System.err.println("Error in " + file.getName() + " " + e.getMessage());
             }
         }
     }
+
+//    public static void initAnimation() {
+//        animationSprites = new HashMap<>();
+//
+//        File folder = new File("res");
+//
+//    }
 
     /**
      * Возвращает спрайт из HashMap
