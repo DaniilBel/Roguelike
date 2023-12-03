@@ -1,5 +1,11 @@
 ### Внешний вид данной версии
-![Alt text](img/roguelike.PNG?raw=true "Game")
+![Alt text](img/roguelike1.PNG?raw=true "Game")
+
+![Alt text](img/roguelike2.PNG?raw=true "Game")
+
+Управление производится стрелками
+
+Имеются нейтральные и агрессивные мобы
 
 Актуальная версия диздока:
 https://docs.google.com/document/d/1rfhFVE98c3pxqFoviJmWFCUJMsN6CWJr9dr7udQU5jI/edit?usp=sharing

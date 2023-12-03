@@ -8,15 +8,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class Floor {
-    private final int TILE_SIZE = 32;
     private Tile[][] floor;
+    private int startPosX;
+    private int startPosY;
     private List<Monster> monsters;
 
     /**
      * Создает уровень на основе поданной сетки. Потом передается в Render для отрисовки
      * @param levelData - сетка с условными обознчениями на карте
      */
-    public Floor(String[] levelData, Monster... monsters) {
+    public Floor(String[] levelData, int startPosX, int startPosY, Monster... monsters) {
         floor = new Tile[levelData.length][];
 
         for (int y = 0; y < levelData.length; y++) {
@@ -25,14 +26,17 @@ public class Floor {
             for (int x = 0; x < levelData[y].length(); x++) {
                 switch (levelData[y].charAt(x)) {
                     case '#':
-                        floor[y][x] = new Tile("wall", x*TILE_SIZE, y*TILE_SIZE);
+                        floor[y][x] = new Tile("wall", x, y);
                         break;
                     case '.':
-                        floor[y][x] = new Tile("floor", x*TILE_SIZE, y*TILE_SIZE);
+                        floor[y][x] = new Tile("floor", x, y);
                         break;
                 }
             }
         }
+
+        this.startPosX = startPosX;
+        this.startPosY = startPosY;
 
         this.monsters = new ArrayList<>();
         Collections.addAll(this.monsters, monsters);
@@ -58,12 +62,28 @@ public class Floor {
         return null;
     }
 
+    public int getStartPosX() {
+        return startPosX;
+    }
+
+    public int getStartPosY() {
+        return startPosY;
+    }
+
     public int getSizeX() {
         return floor[0].length;
     }
 
     public int getSizeY() {
         return floor.length;
+    }
+
+    public boolean monsterIsHere(int x, int y) {
+        for (int i = 0; i < monsters.size(); i++)
+            if (monsters.get(i).getX() == x && monsters.get(i).getY() == y)
+                return true;
+
+        return false;
     }
 
     /**

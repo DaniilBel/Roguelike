@@ -1,7 +1,7 @@
 package org.example.engine;
 
 public class Tile {
-
+    private final int TILE_SIZE = 32;
     private String tag;
     protected int x;
     protected int y;
@@ -16,8 +16,8 @@ public class Tile {
      */
     public Tile(String tag, int x, int y) {
         this.tag = tag;
-        this.x = x;
-        this.y = y;
+        this.x = x * TILE_SIZE;
+        this.y = y * TILE_SIZE;
     }
 
     public String getTag() {

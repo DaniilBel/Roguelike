@@ -31,7 +31,7 @@ public class ControlListener implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Key pressed");
+//        System.out.println("Key pressed");
         final int step = 4;
         moveDirection(e, step);
     }
@@ -43,7 +43,7 @@ public class ControlListener implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Key released");
+//        System.out.println("Key released");
         final int step = 0;
         moveDirection(e, step);
     }
