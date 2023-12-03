@@ -6,7 +6,6 @@ package org.example.entity;
 public class Person extends Entity {
 
     private double velX = 0;
-
     private double velY = 0;
 
     public Person(int x, int y, int hitPoints) {

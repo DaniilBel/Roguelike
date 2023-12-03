@@ -4,17 +4,20 @@ import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
 import org.example.entity.Monster;
 import org.example.entity.Person;
+import org.example.map.Levels;
 import org.example.map.level.Floor;
 
 import javax.swing.*;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * Запускает бесконечный цикл с игрой
  * Здесь же идёт управление и отрисовка персонажа
  */
 public class Engine implements Runnable {
-
     private static final int TILE_SIZE = 32;
+    private static Random random;
     private static Person person;
     private static Monster[] monsters;
 //    private static Timer timer;
@@ -35,6 +38,8 @@ public class Engine implements Runnable {
         System.out.println("Engine: Start engine");
         Resources.init();
         System.out.println("Engine: Init resources");
+        currentFloor = Levels.LEVEL_1;
+        System.out.println("Engine: Init level");
 
         running = true;
         thread = new Thread(Engine.this);
@@ -75,20 +80,9 @@ public class Engine implements Runnable {
         int frames = 0;
         long timer = System.currentTimeMillis();
 
-        person = new Person(2*TILE_SIZE, 1*TILE_SIZE, 20); // *32
+        random = new Random();
 
-        currentFloor = new Floor(new String[] {
-                "###########",
-                "#....#....#",
-                "#....#....#",
-                "##..##....#",
-                "#....#....#",
-                "#.........#",
-                "#.........#",
-                "#....#....#",
-                "###########"
-        }, new Monster(Monster.Type.GHOST, 4*TILE_SIZE, 2*TILE_SIZE));
-
+        person = new Person(2, 1, 20);
         monsters = currentFloor.getMonsters();
 
         while (running) {
@@ -121,13 +115,112 @@ public class Engine implements Runnable {
     public static void movePerson(double dX, double dY) {
         switch (getFrontTile(person, dX + (double)TILE_SIZE/2, dY + (double)TILE_SIZE/2).getTag()) {
             case "floor":
-//                person.setPos(person.getX() + dX, person.getY() + dY);
                 person.smoothMoving();
                 break;
             case "wall":
                 System.out.println("A wall");
                 break;
         }
+        moveMonsters();
+    }
+
+    private static void moveMonsters() {
+        for(Monster monster : monsters) {
+            if(monster.getHitPoints() <= 0)
+                continue;
+
+            if(!monster.shouldChasePlayer()) {
+                switch(random.nextInt(4)) {
+                    case 0:
+                        if(currentFloor.monsterIsHere(monster.getX()+1, monster.getY())) {
+                            return;
+                        }
+                        else if(monster.getX()+1 == person.getX() && monster.getY() == person.getY()) {
+                            message();
+                            break;
+                        }
+                        if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
+                            monster.setPos(monster.getX()+1, monster.getY());
+                            break;
+                        }
+                    case 1:
+                        if(currentFloor.monsterIsHere(monster.getX()-1, monster.getY())) {
+                            return;
+                        }
+                        else if(monster.getX()-1 == person.getX() && monster.getY() == person.getY()) {
+                            message();
+                            break;
+                        }
+                        if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
+                            monster.setPos(monster.getX()-1, monster.getY());
+                            break;
+                        }
+                    case 2:
+                        if(currentFloor.monsterIsHere(monster.getX(), monster.getY()+1)) {
+                            return;
+                        }
+                        else if(monster.getX() == person.getX() && monster.getY()+1 == person.getY()) {
+                            message();
+                            break;
+                        }
+                        if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
+                            monster.setPos(monster.getX(), monster.getY()+1);
+                            break;
+                        }
+                    case 3:
+                        if(currentFloor.monsterIsHere(monster.getX(), monster.getY()-1)) {
+                            return;
+                        }
+                        else if(monster.getX() == person.getX() && monster.getY()-1 == person.getY()) {
+                            message();
+                            break;
+                        }
+                        if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
+                            monster.setPos(monster.getX(), monster.getY()-1);
+                            break;
+                        }
+                }
+            } else {
+                float angCoeff = -((float)person.getY()-(float)monster.getY())/((float)person.getX()-(float)monster.getX());
+
+                if(angCoeff>-1 && angCoeff<1 && person.getX()>monster.getX()) {
+                    if(monster.getX()+1 == person.getX() && monster.getY() == person.getY()) {
+                        message();
+                    }
+                    else if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
+                        monster.setPos(monster.getX()+1, monster.getY());
+                    }
+                }
+                else if(angCoeff>-1 && angCoeff<1 && person.getX()<monster.getX()) {
+                    if(monster.getX()-1 == person.getX() && monster.getY() == person.getY()) {
+                        message();
+                    }
+                    else if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
+                        monster.setPos(monster.getX()-1, monster.getY());
+                    }
+                }
+                else if((angCoeff>1 || angCoeff<-1) && person.getY()>monster.getY()) {
+                    if(monster.getX() == person.getX() && monster.getY()+1 == person.getY()) {
+                        message();
+                    }
+                    else if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
+                        monster.setPos(monster.getX(), monster.getY()+1);
+                    }
+                }
+                else if((angCoeff>1 || angCoeff<-1) && person.getY()<monster.getY()) {
+                    if(monster.getX() == person.getX() && monster.getY()-1 == person.getY()) {
+                        message();
+                    }
+                    else if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
+                        monster.setPos(monster.getX(), monster.getY()-1);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void message() {
+        System.out.println("You have been attacked!");
     }
 
     /**

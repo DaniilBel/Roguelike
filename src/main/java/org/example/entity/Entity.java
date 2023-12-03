@@ -3,6 +3,7 @@ package org.example.entity;
 import org.example.engine.Tile;
 
 public class Entity extends Tile {
+
     protected int hitPoints;
     protected int strength;
     protected int defense;
