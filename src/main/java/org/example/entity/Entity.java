@@ -59,15 +59,19 @@ public class Entity extends Tile {
         this.motionOffsetY = motionOffsetY;
     }
 
-    public void decreaseMotionOffset() {
-        if(motionOffsetX > 0)
-            motionOffsetX-=2;
-        else if(motionOffsetX < 0)
-            motionOffsetX+=2;
+    public int getStrength() {
+        return strength;
+    }
 
-        if(motionOffsetY > 0)
-            motionOffsetY-=2;
-        else if(motionOffsetY < 0)
-            motionOffsetY+=2;
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
     }
 }
