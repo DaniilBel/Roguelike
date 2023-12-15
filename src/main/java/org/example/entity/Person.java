@@ -10,11 +10,13 @@ public class Person extends Entity {
 
     public Person(int x, int y, int hitPoints) {
         super("person", x, y, hitPoints);
+        this.defense = 0;
+        this.strength = 5;
     }
 
     public void smoothMoving() {
-        x += velX;
-        y += velY;
+        x += (int) velX;
+        y += (int) velY;
     }
 
     public void setVelX(double velX) {
@@ -32,7 +34,6 @@ public class Person extends Entity {
     public double getVelY() {
         return velY;
     }
-
 
     /**
      * Конкретная реализация ХП для персонажа
