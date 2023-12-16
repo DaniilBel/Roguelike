@@ -2,7 +2,7 @@ package org.example.entity;
 
 public class Monster extends Entity implements Behaviour {
 
-    private Type type;
+    private final Type type;
     private boolean chasePlayer;
     public Monster(Type type, int x, int y) {
         super(type.getName(), x, y, type.getHp());
@@ -37,11 +37,11 @@ public class Monster extends Entity implements Behaviour {
         GHOST("ghost", 11, 2, 0, false),
         RAT("rat", 11, 2, 0, true);
 
-        private String name;
-        private int hp;
-        private int strength;
-        private int defense;
-        private boolean chase;
+        private final String name;
+        private final int hp;
+        private final int strength;
+        private final int defense;
+        private final boolean chase;
 
         Type(String name, int hp, int strength, int defense, boolean chase) {
             this.name = name;
