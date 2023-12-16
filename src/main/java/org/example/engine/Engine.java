@@ -82,7 +82,7 @@ public class Engine implements Runnable {
 
         random = new Random();
 
-        person = new Person(2, 1, 2000);
+        person = new Person(2, 1, 200);
         monsters = currentFloor.getMonsters();
 
         while (running) {
@@ -113,6 +113,9 @@ public class Engine implements Runnable {
      * @param dY - перемещение по y
      */
     public static void movePerson(double dX, double dY) {
+        if (isPlayerDied())
+            return;
+
         switch (getFrontTile(person, dX + (double)TILE_SIZE/2, dY + (double)TILE_SIZE/2).getTag()) {
             case "floor":
                 person.smoothMoving();
@@ -124,6 +127,10 @@ public class Engine implements Runnable {
         moveMonsters();
     }
 
+    /**
+     * Функция передвижения монстра. В зависимости от типа монстр может следовать за игроком
+     * или ходить около своего места. При сближении монстра с игроком он атакует
+     */
     private static void moveMonsters() {
         for(Monster monster : monsters) {
             if(monster.getHitPoints() <= 0)
@@ -227,6 +234,16 @@ public class Engine implements Runnable {
         }
     }
 
+    private static boolean stateIsAlive = true;
+    private static boolean isPlayerDied() {
+        if (stateIsAlive && person.getHitPoints() <= 0) {
+            stateIsAlive = false;
+            System.out.println("You died");
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Проверяет коллизию монстра и игрока
      * @param xM - позиция монства по x
@@ -253,6 +270,11 @@ public class Engine implements Runnable {
             person.setHitPoints(-1);
         else
             person.setHitPoints(person.getDefense() - monster.getStrength());
+
+        if (monster.getHitPoints() <= 0) {
+            person.setXP(+5);
+            person.levelUp();
+        }
     }
 
     private static void message() {

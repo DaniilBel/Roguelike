@@ -7,6 +7,7 @@ public class Person extends Entity {
 
     private double velX = 0;
     private double velY = 0;
+    private double XP = 0;
 
     public Person(int x, int y, int hitPoints) {
         super("person", x, y, hitPoints);
@@ -17,6 +18,15 @@ public class Person extends Entity {
     public void smoothMoving() {
         x += (int) velX;
         y += (int) velY;
+    }
+
+    public void levelUp() {
+        if (XP == 10) {
+            System.out.println("Level up");
+            defense++;
+            strength++;
+            XP = 0;
+        }
     }
 
     public void setVelX(double velX) {
@@ -33,6 +43,14 @@ public class Person extends Entity {
 
     public double getVelY() {
         return velY;
+    }
+
+    public double getXP() {
+        return XP;
+    }
+
+    public void setXP(double XP) {
+        this.XP += XP;
     }
 
     /**
