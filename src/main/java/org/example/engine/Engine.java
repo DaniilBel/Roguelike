@@ -20,7 +20,6 @@ public class Engine implements Runnable {
     private static Random random;
     private static Person person;
     private static Monster[] monsters;
-//    private static Timer timer;
     private static Thread thread;
     private static Floor currentFloor;
     private static boolean running = false;
@@ -44,9 +43,6 @@ public class Engine implements Runnable {
         running = true;
         thread = new Thread(Engine.this);
         thread.start();
-
-//        timer = new Timer(200, new ControlListener());
-//        timer.start();
     }
 
     /**
@@ -122,6 +118,11 @@ public class Engine implements Runnable {
                 break;
             case "wall":
                 System.out.println("A wall");
+                break;
+            case "wall_hole":
+                person.smoothMoving();
+                currentFloor = Levels.LEVEL_2;
+                monsters = currentFloor.getMonsters();
                 break;
         }
         moveMonsters();
