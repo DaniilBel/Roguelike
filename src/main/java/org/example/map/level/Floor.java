@@ -31,6 +31,9 @@ public class Floor {
                     case '.':
                         floor[y][x] = new Tile("floor", x, y);
                         break;
+                    case 'd':
+                        floor[y][x] = new Tile("wall_hole", x, y);
+                        break;
                 }
             }
         }
