@@ -4,10 +4,10 @@ import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
 import org.example.entity.Monster;
 import org.example.entity.Person;
+import org.example.entity.PersonAttack;
 import org.example.map.Levels;
 import org.example.map.level.Floor;
 
-import javax.swing.*;
 import java.util.Objects;
 import java.util.Random;
 
@@ -72,13 +72,13 @@ public class Engine implements Runnable {
         final double ticks = 60.0; // Игра будет ограничиваться 60 тиками
         double ns = 1_000_000_000 / ticks;
         double delta = 0; // Нужно для обновления внутренней игрвой логики (персонаж, монстры и тп)
-        int updates = 0;
-        int frames = 0;
+//        int updates = 0;
+//        int frames = 0;
         long timer = System.currentTimeMillis();
 
         random = new Random();
 
-        person = new Person(2, 1, 200);
+        person = new Person(2, 1, 2000);
         monsters = currentFloor.getMonsters();
 
         while (running) {
@@ -87,17 +87,17 @@ public class Engine implements Runnable {
             lastTime = now;
             if (delta >= 1) {
                 movePerson(person.getVelX(), person.getVelY());
-                updates++;
+//                updates++;
                 delta--;
             }
 
-            frames++;
+//            frames++;
 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
 //                System.out.println(updates + " Ticks, Fps " + frames);
-                updates = 0;
-                frames = 0;
+//                updates = 0;
+//                frames = 0;
             }
         }
         stop();
@@ -236,6 +236,11 @@ public class Engine implements Runnable {
     }
 
     private static boolean stateIsAlive = true;
+
+    /**
+     * Испоьзуется stateIsAlive для вывода сообщения единожды
+     * @return игрок умер или нет
+     */
     private static boolean isPlayerDied() {
         if (stateIsAlive && person.getHitPoints() <= 0) {
             stateIsAlive = false;
@@ -259,14 +264,16 @@ public class Engine implements Runnable {
     }
 
     /**
-     * В случае коллизии игрок и омнстр конфликтуют
+     * В случае коллизии игрок и монстр атакуют друг друга
      * @param monster - монстр, с кем произошла коллизия
      */
     private static void attack(Monster monster) {
-        if (monster.getDefense() - person.getStrength() >= 0)
-            monster.setHitPoints(-1);
-        else
-            monster.setHitPoints(-person.getStrength() + monster.getDefense());
+        PersonAttack personAttack = new PersonAttack(person);
+
+        // Персонаж атакует монстра
+        personAttack.attack(monster);
+
+        // Монст атакует персонажа
         if (person.getDefense() - monster.getStrength() >= 0)
             person.setHitPoints(-1);
         else
