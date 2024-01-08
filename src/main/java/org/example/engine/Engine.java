@@ -22,6 +22,7 @@ public class Engine implements Runnable {
     private static Monster[] monsters;
     private static Thread thread;
     private static Floor currentFloor;
+    private static Levels levels;
     private static boolean running = false;
 
     /**
@@ -37,7 +38,11 @@ public class Engine implements Runnable {
         System.out.println("Engine: Start engine");
         Resources.init();
         System.out.println("Engine: Init resources");
-        currentFloor = Levels.LEVEL_1;
+
+//        currentFloor = Levels.LEVEL_1;
+        levels = Levels.builder().setStartPos(2, 1).setPath("level").build();
+        currentFloor = levels.nextLevel();
+
         System.out.println("Engine: Init level");
 
         running = true;
@@ -121,7 +126,7 @@ public class Engine implements Runnable {
                 break;
             case "wall_hole":
                 person.smoothMoving();
-                currentFloor = Levels.LEVEL_2;
+                currentFloor = levels.nextLevel();
                 monsters = currentFloor.getMonsters();
                 break;
         }
