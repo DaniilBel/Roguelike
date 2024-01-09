@@ -25,11 +25,12 @@ public class GUI {
         window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
 
         gameWindow = new GameWindow();
         window.add(gameWindow);
+
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
 
         System.out.println("GUI: Created window");
     }

@@ -8,16 +8,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class Floor {
-    private Tile[][] floor;
-    private int startPosX;
-    private int startPosY;
-    private List<Monster> monsters;
+    private final Tile[][] floor;
+    private final List<Monster> monsters;
 
     /**
      * Создает уровень на основе поданной сетки. Потом передается в Render для отрисовки
      * @param levelData - сетка с условными обознчениями на карте
      */
-    public Floor(String[] levelData, int startPosX, int startPosY, Monster... monsters) {
+    public Floor(String[] levelData, ArrayList<Monster> monsters) {
         floor = new Tile[levelData.length][];
 
         for (int y = 0; y < levelData.length; y++) {
@@ -38,11 +36,8 @@ public class Floor {
             }
         }
 
-        this.startPosX = startPosX;
-        this.startPosY = startPosY;
-
-        this.monsters = new ArrayList<>();
-        Collections.addAll(this.monsters, monsters);
+        this.monsters = monsters;
+//        Collections.addAll(this.monsters, monsters);
     }
 
     public Monster[] getMonsters() {
@@ -63,14 +58,6 @@ public class Floor {
                 return m;
         }
         return null;
-    }
-
-    public int getStartPosX() {
-        return startPosX;
-    }
-
-    public int getStartPosY() {
-        return startPosY;
     }
 
     public int getSizeX() {

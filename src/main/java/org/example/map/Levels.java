@@ -11,8 +11,6 @@ public class Levels {
     private String path = "";
     private int x, y;
     private int startPosX, startPosY;
-
-    private Floor level;
     private Queue<Floor> levels;
 
     private Levels(){
@@ -27,19 +25,35 @@ public class Levels {
         levels = new LinkedList<>();
 
         if (path.isEmpty()) {
-            level = new Floor(new String[] {
+            levels.add(new Floor(new String[] {
                     "###########",
                     "#....#....#",
-                    "#....#....d",
+                    "#....#....#",
                     "##..##....#",
                     "#....#....#",
                     "#.........#",
                     "#.........#",
                     "#....#....#",
-                    "###########"
-            }, 2, 1,
+                    "#######d###"
+            }, new ArrayList<>(Arrays.asList(
                     new Monster(Monster.Type.GHOST, 3, 2),
-                    new Monster(Monster.Type.RAT, 2, 6));
+                    new Monster(Monster.Type.RAT, 2, 6)
+            ))));
+
+            levels.add(new Floor(new String[] {
+                    "###########",
+                    "#....#....#",
+                    "#....#....#",
+                    "#....##..##",
+                    "#....#....#",
+                    "#.........#",
+                    "#.........#",
+                    "#....#....#",
+                    "###########"
+            }, new ArrayList<>(Arrays.asList(
+                    new Monster(Monster.Type.GHOST, 3, 2)
+            ))));
+
         } else {
             // Строятся уровни из папки
             File folder = new File(path);
@@ -47,6 +61,8 @@ public class Levels {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
                 // Читаем файл построчно
                 ArrayList<String> lines = new ArrayList<>();
+                ArrayList<Monster> monsters = new ArrayList<>();
+                ArrayList<String> floor = new ArrayList<>();
 
                 try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                     String line;
@@ -55,12 +71,32 @@ public class Levels {
                     }
 
                     // Конвертируем ArrayList в String[]
-                    String[] floor = lines.toArray(new String[0]);
+//                    String[] floorData = lines.toArray(new String[0]);
 
-                    // Добавляем уровень в очередь, чтобы при переходе не следующий удалять текущий
-                    levels.add(new Floor(floor, startPosX, startPosY,
-                            new Monster(Monster.Type.GHOST, 3, 2),
-                            new Monster(Monster.Type.RAT, 2, 6)));
+                    for (String str : lines) {
+                        if (str.charAt(0) == '#' || str.charAt(0) == '.' || str.charAt(0) == 'd') {
+                            floor.add(str);
+                        } else {
+                            String[] tmp = str.split(" ");
+                            if (tmp[0].equals("GHOST")) {
+                                monsters.add(new Monster(Monster.Type.GHOST,
+                                        Integer.parseInt(tmp[1]),
+                                        Integer.parseInt(tmp[2])));
+                            }
+                            if (tmp[0].equals("RAT")) {
+                                monsters.add(new Monster(Monster.Type.RAT,
+                                        Integer.parseInt(tmp[1]),
+                                        Integer.parseInt(tmp[2])));
+                            }
+                        }
+                    }
+
+                    // Добавляем уровень в очередь, чтобы при переходе на следующий уровень удалять текущий
+//                    levels.add(new Floor(floor.toArray(new String[0]),
+//                            new Monster(Monster.Type.GHOST, 3, 2),
+//                            new Monster(Monster.Type.RAT, 2, 6)));
+
+                    levels.add(new Floor(floor.toArray(new String[0]), monsters));
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -123,33 +159,4 @@ public class Levels {
             return null;
         }
     }
-
-    public static final Floor LEVEL_1 = new Floor(new String[] {
-            "###########",
-            "#....#....#",
-            "#....#....d",
-            "##..##....#",
-            "#....#....#",
-            "#.........#",
-            "#.........#",
-            "#....#....#",
-            "###########"
-    }, 2, 1,
-            new Monster(Monster.Type.GHOST, 3, 2),
-            new Monster(Monster.Type.RAT, 2, 6));
-
-    public static final Floor LEVEL_2 = new Floor(new String[] {
-            "###########",
-            "#....#....#",
-            "#....#....#",
-            "#....##..##",
-            "#....#....#",
-            "#.........#",
-            "#.........#",
-            "#....#....#",
-            "###########"
-    }, 2, 1,
-            new Monster(Monster.Type.GHOST, 3, 2));
-
-
 }

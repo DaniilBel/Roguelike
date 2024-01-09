@@ -243,7 +243,7 @@ public class Engine implements Runnable {
     private static boolean stateIsAlive = true;
 
     /**
-     * Испоьзуется stateIsAlive для вывода сообщения единожды
+     * Используется stateIsAlive для вывода сообщения единожды
      * @return игрок умер или нет
      */
     private static boolean isPlayerDied() {
@@ -264,7 +264,7 @@ public class Engine implements Runnable {
      * @return коллизию
      */
     private static boolean checkCollision(int xM, int yM, int xP, int yP) {
-        final int EXPAND = 4;
+        final int EXPAND = 8;
         return (xM >= xP - EXPAND && xM <= xP + EXPAND) && (yM >= yP - EXPAND && yM <= yP + EXPAND);
     }
 
@@ -278,7 +278,7 @@ public class Engine implements Runnable {
         // Персонаж атакует монстра
         personAttack.attack(monster);
 
-        // Монст атакует персонажа
+        // Монстр атакует персонажа
         if (person.getDefense() - monster.getStrength() >= 0)
             person.setHitPoints(-1);
         else
