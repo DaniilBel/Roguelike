@@ -2,7 +2,7 @@ package org.example.engine;
 
 import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
-import org.example.entity.Monster;
+import org.example.entity.monster.Monster;
 import org.example.entity.Person;
 import org.example.entity.PersonAttack;
 import org.example.map.Levels;

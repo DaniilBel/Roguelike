@@ -1,6 +1,9 @@
-package org.example.entity;
+package org.example.entity.monster;
 
-public class Monster extends Entity implements Behaviour {
+import org.example.entity.Behaviour;
+import org.example.entity.Entity;
+
+public class Monster extends Entity implements Behaviour, MonsterFactory {
 
     private final Type type;
     private boolean chasePlayer;
@@ -28,6 +31,16 @@ public class Monster extends Entity implements Behaviour {
      */
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public ReplicationMonster createReplicator() {
+        return null;
+    }
+
+    @Override
+    public Monster createMonster(Type type, int x, int y) {
+        return null;
     }
 
     /**

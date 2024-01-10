@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import org.example.entity.monster.Monster;
+
 import java.util.Random;
 
 public class PersonAttack extends Person {

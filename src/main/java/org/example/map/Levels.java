@@ -1,6 +1,9 @@
 package org.example.map;
 
-import org.example.entity.Monster;
+import org.example.entity.monster.Monster;
+import org.example.entity.monster.MonsterFactory;
+import org.example.entity.monster.Monsters;
+import org.example.entity.monster.ReplicationMonster;
 import org.example.map.level.Floor;
 
 import java.io.*;
@@ -36,8 +39,8 @@ public class Levels {
                     "#....#....#",
                     "#######d###"
             }, new ArrayList<>(Arrays.asList(
-                    new Monster(Monster.Type.GHOST, 3, 2),
-                    new Monster(Monster.Type.RAT, 2, 6)
+                    new Monsters().createMonster(Monster.Type.GHOST, 3, 2),
+                    new Monsters().createMonster(Monster.Type.RAT, 2, 6)
             ))));
 
             levels.add(new Floor(new String[] {
@@ -50,8 +53,8 @@ public class Levels {
                     "#.........#",
                     "#....#....#",
                     "###########"
-            }, new ArrayList<>(Arrays.asList(
-                    new Monster(Monster.Type.GHOST, 3, 2)
+            }, new ArrayList<>(List.of(
+                    new Monsters().createMonster(Monster.Type.GHOST, 3, 2)
             ))));
 
         } else {
@@ -61,7 +64,11 @@ public class Levels {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
                 // Читаем файл построчно
                 ArrayList<String> lines = new ArrayList<>();
-                ArrayList<Monster> monsters = new ArrayList<>();
+
+                // Монстры на уровне
+                ArrayList<MonsterFactory> monsters = new ArrayList<>();
+
+                // Уровень
                 ArrayList<String> floor = new ArrayList<>();
 
                 try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -70,32 +77,28 @@ public class Levels {
                         lines.add(line);
                     }
 
-                    // Конвертируем ArrayList в String[]
-//                    String[] floorData = lines.toArray(new String[0]);
-
+                    // Разделяем уровень и монстров
                     for (String str : lines) {
                         if (str.charAt(0) == '#' || str.charAt(0) == '.' || str.charAt(0) == 'd') {
                             floor.add(str);
                         } else {
                             String[] tmp = str.split(" ");
                             if (tmp[0].equals("GHOST")) {
-                                monsters.add(new Monster(Monster.Type.GHOST,
+                                monsters.add(new Monsters().createMonster(Monster.Type.GHOST,
                                         Integer.parseInt(tmp[1]),
-                                        Integer.parseInt(tmp[2])));
+                                        Integer.parseInt(tmp[2])
+                                ));
                             }
                             if (tmp[0].equals("RAT")) {
-                                monsters.add(new Monster(Monster.Type.RAT,
+                                monsters.add(new Monsters().createMonster(Monster.Type.RAT,
                                         Integer.parseInt(tmp[1]),
-                                        Integer.parseInt(tmp[2])));
+                                        Integer.parseInt(tmp[2])
+                                ));
                             }
                         }
                     }
 
                     // Добавляем уровень в очередь, чтобы при переходе на следующий уровень удалять текущий
-//                    levels.add(new Floor(floor.toArray(new String[0]),
-//                            new Monster(Monster.Type.GHOST, 3, 2),
-//                            new Monster(Monster.Type.RAT, 2, 6)));
-
                     levels.add(new Floor(floor.toArray(new String[0]), monsters));
 
                 } catch (IOException e) {

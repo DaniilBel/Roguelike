@@ -1,21 +1,22 @@
 package org.example.map.level;
 
 import org.example.engine.Tile;
-import org.example.entity.Monster;
+import org.example.entity.monster.Monster;
+import org.example.entity.monster.MonsterFactory;
+import org.example.entity.monster.Monsters;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Floor {
     private final Tile[][] floor;
-    private final List<Monster> monsters;
+    private final List<MonsterFactory> monsters;
 
     /**
      * Создает уровень на основе поданной сетки. Потом передается в Render для отрисовки
-     * @param levelData - сетка с условными обознчениями на карте
+     * @param levelData - сетка с условными обозначениями на карте
      */
-    public Floor(String[] levelData, ArrayList<Monster> monsters) {
+    public Floor(String[] levelData, ArrayList<MonsterFactory> monsters) {
         floor = new Tile[levelData.length][];
 
         for (int y = 0; y < levelData.length; y++) {
@@ -45,12 +46,12 @@ public class Floor {
         return monsters.toArray(other);
     }
 
-    public List<Monster> getMonstersList() {
+    public List<MonsterFactory> getMonstersList() {
         return monsters;
     }
 
-    public Monster getMonsterAt(int x, int y) {
-        for (Monster m : monsters) {
+    public MonsterFactory getMonsterAt(int x, int y) {
+        for (MonsterFactory m : monsters) {
             if (m == null)
                 return null;
 

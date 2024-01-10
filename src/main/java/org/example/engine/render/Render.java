@@ -3,7 +3,7 @@ package org.example.engine.render;
 import org.example.engine.gui.GUI;
 import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
-import org.example.entity.Monster;
+import org.example.entity.monster.Monster;
 import org.example.entity.Person;
 import org.example.map.level.Floor;
 import org.example.engine.Tile;
