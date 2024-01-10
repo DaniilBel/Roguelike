@@ -13,8 +13,10 @@ public class Monsters implements MonsterFactory {
     }
 
     @Override
-    public ReplicationMonster createReplicator() {
-        return null;
+    public ReplicationMonster createReplicator(ReplicationMonster.Type type, int x, int y) {
+        this.x = x;
+        this.y = y;
+        return new ReplicationMonster(type, x, y);
     }
 
     @Override

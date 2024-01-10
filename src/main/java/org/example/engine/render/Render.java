@@ -5,11 +5,15 @@ import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
 import org.example.entity.monster.Monster;
 import org.example.entity.Person;
+import org.example.entity.monster.MonsterFactory;
+import org.example.entity.monster.Monsters;
+import org.example.entity.monster.ReplicationMonster;
 import org.example.map.level.Floor;
 import org.example.engine.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Render {
 
@@ -50,15 +54,23 @@ public class Render {
         }
     }
 
-    public void renderMonsters(Monster[] monsters, Person person, Graphics g) {
+    public void renderMonsters(ArrayList<MonsterFactory> monsters, Person person, Graphics g) {
         if (monsters == null) return;
 
-        for (Monster m : monsters) {
-            BufferedImage sprite = Resources.getSprite(m.getTag());
-            int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
-            int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
-            if (m.getHitPoints() > 0)
+        for (MonsterFactory pickMonster : monsters) {
+            if (pickMonster instanceof Monster m) {
+
+                BufferedImage sprite = Resources.getSprite(m.getTag());
+                int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
+                int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
+                if (m.getHitPoints() > 0)
+                    g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth()*zoom, sprite.getHeight()*zoom, null);
+            } else if (pickMonster instanceof ReplicationMonster m) {
+                BufferedImage sprite = Resources.getSprite(m.getTag());
+                int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
+                int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
                 g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth()*zoom, sprite.getHeight()*zoom, null);
+            }
         }
     }
 

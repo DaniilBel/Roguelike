@@ -54,7 +54,8 @@ public class Levels {
                     "#....#....#",
                     "###########"
             }, new ArrayList<>(List.of(
-                    new Monsters().createMonster(Monster.Type.GHOST, 3, 2)
+                    new Monsters().createMonster(Monster.Type.GHOST, 3, 2),
+                    new Monsters().createReplicator(ReplicationMonster.Type.MOLD, 3, 6)
             ))));
 
         } else {
@@ -91,6 +92,12 @@ public class Levels {
                             }
                             if (tmp[0].equals("RAT")) {
                                 monsters.add(new Monsters().createMonster(Monster.Type.RAT,
+                                        Integer.parseInt(tmp[1]),
+                                        Integer.parseInt(tmp[2])
+                                ));
+                            }
+                            if (tmp[0].equals("MOLD")) {
+                                monsters.add(new Monsters().createReplicator(ReplicationMonster.Type.MOLD,
                                         Integer.parseInt(tmp[1]),
                                         Integer.parseInt(tmp[2])
                                 ));

@@ -5,6 +5,6 @@ public interface MonsterFactory {
 
     int getY();
 
-    ReplicationMonster createReplicator();
+    ReplicationMonster createReplicator(ReplicationMonster.Type type, int x, int y);
     Monster createMonster(Monster.Type type, int x, int y);
 }

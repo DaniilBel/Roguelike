@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Floor {
     private final Tile[][] floor;
-    private final List<MonsterFactory> monsters;
+    private final ArrayList<MonsterFactory> monsters;
 
     /**
      * Создает уровень на основе поданной сетки. Потом передается в Render для отрисовки
@@ -41,9 +41,10 @@ public class Floor {
 //        Collections.addAll(this.monsters, monsters);
     }
 
-    public Monster[] getMonsters() {
-        Monster[] other = new Monster[monsters.size()];
-        return monsters.toArray(other);
+    public ArrayList<MonsterFactory> getMonsters() {
+//        MonsterFactory[] other = new MonsterFactory[monsters.size()];
+//        return monsters.toArray(other);
+        return monsters;
     }
 
     public List<MonsterFactory> getMonstersList() {

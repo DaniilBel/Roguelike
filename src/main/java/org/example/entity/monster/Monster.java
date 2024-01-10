@@ -34,7 +34,7 @@ public class Monster extends Entity implements Behaviour, MonsterFactory {
     }
 
     @Override
-    public ReplicationMonster createReplicator() {
+    public ReplicationMonster createReplicator(ReplicationMonster.Type type, int x, int y) {
         return null;
     }
 

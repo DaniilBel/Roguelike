@@ -5,9 +5,12 @@ import org.example.entity.Entity;
 import org.example.entity.monster.Monster;
 import org.example.entity.Person;
 import org.example.entity.PersonAttack;
+import org.example.entity.monster.MonsterFactory;
+import org.example.entity.monster.ReplicationMonster;
 import org.example.map.Levels;
 import org.example.map.level.Floor;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -19,7 +22,7 @@ public class Engine implements Runnable {
     private static final int TILE_SIZE = 32;
     private static Random random;
     private static Person person;
-    private static Monster[] monsters;
+    private static ArrayList<MonsterFactory> monsters;
     private static Thread thread;
     private static Floor currentFloor;
     private static Levels levels;
@@ -39,7 +42,6 @@ public class Engine implements Runnable {
         Resources.init();
         System.out.println("Engine: Init resources");
 
-//        currentFloor = Levels.LEVEL_1;
         levels = Levels.builder().setStartPos(2, 1).setPath("level").build();
         currentFloor = levels.nextLevel();
 
@@ -138,103 +140,139 @@ public class Engine implements Runnable {
      * или ходить около своего места. При сближении монстра с игроком он атакует
      */
     private static void moveMonsters() {
-        for(Monster monster : monsters) {
-            if(monster.getHitPoints() <= 0)
-                continue;
+        for(MonsterFactory pickMonster : monsters) {
+            if (pickMonster instanceof Monster monster) {
 
-            if(!monster.shouldChasePlayer()) {
-                switch(random.nextInt(4)) {
-                    case 0:
-                        if(currentFloor.monsterIsHere(monster.getX()+1, monster.getY())) {
-                            return;
-                        }
-                        else if(checkCollision(monster.getX()+1, monster.getY(), person.getX(), person.getY())) {
+                if(monster.getHitPoints() <= 0)
+                    continue;
+
+                if(!monster.shouldChasePlayer()) {
+                    switch(random.nextInt(4)) {
+                        case 0:
+                            if(currentFloor.monsterIsHere(monster.getX()+1, monster.getY())) {
+                                return;
+                            }
+                            else if(checkCollision(monster.getX()+1, monster.getY(), person.getX(), person.getY())) {
+                                message();
+                                attack(monster);
+                                break;
+                            }
+                            if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
+                                monster.setPos(monster.getX()+1, monster.getY());
+                                break;
+                            }
+                        case 1:
+                            if(currentFloor.monsterIsHere(monster.getX()-1, monster.getY())) {
+                                return;
+                            }
+                            else if(checkCollision(monster.getX()-1, monster.getY(), person.getX(), person.getY())) {
+                                message();
+                                attack(monster);
+                                break;
+                            }
+                            if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
+                                monster.setPos(monster.getX()-1, monster.getY());
+                                break;
+                            }
+                        case 2:
+                            if(currentFloor.monsterIsHere(monster.getX(), monster.getY()+1)) {
+                                return;
+                            }
+                            else if(checkCollision(monster.getX(), monster.getY()+1, person.getX(), person.getY())) {
+                                message();
+                                attack(monster);
+                                break;
+                            }
+                            if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
+                                monster.setPos(monster.getX(), monster.getY()+1);
+                                break;
+                            }
+                        case 3:
+                            if(currentFloor.monsterIsHere(monster.getX(), monster.getY()-1)) {
+                                return;
+                            }
+                            else if(checkCollision(monster.getX(), monster.getY()-1, person.getX(), person.getY())) {
+                                message();
+                                attack(monster);
+                                break;
+                            }
+                            if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
+                                monster.setPos(monster.getX(), monster.getY()-1);
+                                break;
+                            }
+                    }
+                } else {
+                    float angCoeff = -((float)person.getY()-(float)monster.getY())/((float)person.getX()-(float)monster.getX());
+
+                    if(angCoeff>-1 && angCoeff<1 && person.getX()>monster.getX()) {
+                        if(checkCollision(monster.getX()+1, monster.getY(), person.getX(), person.getY())) {
                             message();
                             attack(monster);
-                            break;
                         }
-                        if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
+                        else if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
                             monster.setPos(monster.getX()+1, monster.getY());
-                            break;
                         }
-                    case 1:
-                        if(currentFloor.monsterIsHere(monster.getX()-1, monster.getY())) {
-                            return;
-                        }
-                        else if(checkCollision(monster.getX()-1, monster.getY(), person.getX(), person.getY())) {
+                    }
+                    else if(angCoeff>-1 && angCoeff<1 && person.getX()<monster.getX()) {
+                        if(checkCollision(monster.getX()-1, monster.getY(), person.getX(), person.getY())) {
                             message();
                             attack(monster);
-                            break;
                         }
-                        if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
+                        else if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
                             monster.setPos(monster.getX()-1, monster.getY());
-                            break;
                         }
-                    case 2:
-                        if(currentFloor.monsterIsHere(monster.getX(), monster.getY()+1)) {
-                            return;
-                        }
-                        else if(checkCollision(monster.getX(), monster.getY()+1, person.getX(), person.getY())) {
+                    }
+                    else if((angCoeff>1 || angCoeff<-1) && person.getY()>monster.getY()) {
+                        if(checkCollision(monster.getX(), monster.getY()+1, person.getX(), person.getY())) {
                             message();
                             attack(monster);
-                            break;
                         }
-                        if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
+                        else if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
                             monster.setPos(monster.getX(), monster.getY()+1);
-                            break;
                         }
-                    case 3:
-                        if(currentFloor.monsterIsHere(monster.getX(), monster.getY()-1)) {
-                            return;
-                        }
-                        else if(checkCollision(monster.getX(), monster.getY()-1, person.getX(), person.getY())) {
+                    }
+                    else if((angCoeff>1 || angCoeff<-1) && person.getY()<monster.getY()) {
+                        if(checkCollision(monster.getX(), monster.getY()-1, person.getX(), person.getY())) {
                             message();
                             attack(monster);
-                            break;
                         }
-                        if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
+                        else if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
                             monster.setPos(monster.getX(), monster.getY()-1);
-                            break;
                         }
+                    }
                 }
-            } else {
-                float angCoeff = -((float)person.getY()-(float)monster.getY())/((float)person.getX()-(float)monster.getX());
+            } else if (pickMonster instanceof ReplicationMonster monster) {
+                int p = random.nextInt(100);
+                final int STEP = 16;
+                if (p >= 50) {
+                    switch(random.nextInt(4)) {
+                        case 0:
+                            if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
+//                                monsters.add(monster.copy(monster.getX() + STEP, monster.getY()));
+                                break;
+                            }
+                        case 1:
+                            if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
+//                                monsters.add(monster.copy(monster.getX() - STEP, monster.getY()));
+                                break;
+                            }
+                        case 2:
+                            if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
+//                                monsters.add(monster.copy(monster.getX(), monster.getY() + STEP));
+                                break;
+                            }
+                        case 3:
+                            if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
+//                                monsters.add(monster.copy(monster.getX(), monster.getY() - STEP));
+                                break;
+                            }
+                    }
+                }
 
-                if(angCoeff>-1 && angCoeff<1 && person.getX()>monster.getX()) {
-                    if(checkCollision(monster.getX()+1, monster.getY(), person.getX(), person.getY())) {
-                        message();
-                        attack(monster);
-                    }
-                    else if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
-                        monster.setPos(monster.getX()+1, monster.getY());
-                    }
-                }
-                else if(angCoeff>-1 && angCoeff<1 && person.getX()<monster.getX()) {
-                    if(checkCollision(monster.getX()-1, monster.getY(), person.getX(), person.getY())) {
-                        message();
-                        attack(monster);
-                    }
-                    else if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
-                        monster.setPos(monster.getX()-1, monster.getY());
-                    }
-                }
-                else if((angCoeff>1 || angCoeff<-1) && person.getY()>monster.getY()) {
-                    if(checkCollision(monster.getX(), monster.getY()+1, person.getX(), person.getY())) {
-                        message();
-                        attack(monster);
-                    }
-                    else if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
-                        monster.setPos(monster.getX(), monster.getY()+1);
-                    }
-                }
-                else if((angCoeff>1 || angCoeff<-1) && person.getY()<monster.getY()) {
-                    if(checkCollision(monster.getX(), monster.getY()-1, person.getX(), person.getY())) {
-                        message();
-                        attack(monster);
-                    }
-                    else if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
-                        monster.setPos(monster.getX(), monster.getY()-1);
-                    }
+                if(checkCollision(monster.getX()+1, monster.getY(), person.getX(), person.getY())) {
+                    message();
+                    attack(monster);
+                    break;
                 }
             }
         }
@@ -270,23 +308,31 @@ public class Engine implements Runnable {
 
     /**
      * В случае коллизии игрок и монстр атакуют друг друга
-     * @param monster - монстр, с кем произошла коллизия
+     * @param m - монстр, с кем произошла коллизия
      */
-    private static void attack(Monster monster) {
+    private static void attack(MonsterFactory m) {
         PersonAttack personAttack = new PersonAttack(person);
 
         // Персонаж атакует монстра
-        personAttack.attack(monster);
+        if (m instanceof Monster monster) {
+            personAttack.attack(monster);
 
-        // Монстр атакует персонажа
-        if (person.getDefense() - monster.getStrength() >= 0)
-            person.setHitPoints(-1);
-        else
-            person.setHitPoints(person.getDefense() - monster.getStrength());
+            // Монстр атакует персонажа
+            if (person.getDefense() - monster.getStrength() >= 0)
+                person.setHitPoints(-1);
+            else
+                person.setHitPoints(person.getDefense() - monster.getStrength());
 
-        if (monster.getHitPoints() <= 0) {
-            person.setXP(+5);
-            person.levelUp();
+            if (monster.getHitPoints() <= 0) {
+                person.setXP(+5);
+                person.levelUp();
+            }
+        } else if (m instanceof ReplicationMonster monster) {
+            // Монстр атакует персонажа
+            if (person.getDefense() - monster.getStrength() >= 0)
+                person.setHitPoints(-1);
+            else
+                person.setHitPoints(person.getDefense() - monster.getStrength());
         }
     }
 
@@ -318,7 +364,7 @@ public class Engine implements Runnable {
      *
      * @return все монстры на этаже
      */
-    public static Monster[] getMonsters() {
+    public static ArrayList<MonsterFactory> getMonsters() {
         return monsters;
     }
 
