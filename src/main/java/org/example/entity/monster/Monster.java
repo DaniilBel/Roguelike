@@ -2,11 +2,17 @@ package org.example.entity.monster;
 
 import org.example.entity.Behaviour;
 import org.example.entity.Entity;
+import org.example.entity.behaviour.Coward;
+import org.example.entity.behaviour.State;
 
-public class Monster extends Entity implements Behaviour, MonsterFactory {
+import java.util.Random;
 
+public class Monster extends Entity implements Behaviour, MonsterFactory, State {
+
+    private State state;
     private final Type type;
     private boolean chasePlayer;
+    private final Random random = new Random();
     public Monster(Type type, int x, int y) {
         super(type.getName(), x, y, type.getHp());
         this.type = type;
@@ -41,6 +47,22 @@ public class Monster extends Entity implements Behaviour, MonsterFactory {
     @Override
     public Monster createMonster(Type type, int x, int y) {
         return null;
+    }
+
+    public void setState(State state) {
+        chasePlayer = !chasePlayer;
+        this.state = state;
+    }
+
+    @Override
+    public void doAction() {
+        if (state != null) {
+            state.doAction();
+            if (getHitPoints() <= 5 && random.nextInt(100) >= 80) {
+                int hp = getHitPoints()+1;
+                setHitPoints(hp);
+            }
+        }
     }
 
     /**

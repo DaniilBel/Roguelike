@@ -2,6 +2,8 @@ package org.example.engine;
 
 import org.example.engine.utils.Resources;
 import org.example.entity.Entity;
+import org.example.entity.behaviour.Agressive;
+import org.example.entity.behaviour.Passive;
 import org.example.entity.monster.Monster;
 import org.example.entity.Person;
 import org.example.entity.PersonAttack;
@@ -26,6 +28,7 @@ public class Engine implements Runnable {
     private static ArrayList<MonsterFactory> monsters;
     private static ArrayList<ReplicationMonster> replicators;
     private static Iterator<MonsterFactory> monsterIterator;
+    private static boolean behaviourIsChanged = false;
     private static Thread thread;
     private static Floor currentFloor;
     private static Levels levels;
@@ -154,6 +157,18 @@ public class Engine implements Runnable {
 
                 if (monster.getHitPoints() <= 0)
                     continue;
+
+                if (monster.getHitPoints() <= 5 && !behaviourIsChanged) {
+                    monster.setState(new Passive());
+                    behaviourIsChanged = !behaviourIsChanged;
+                }
+
+                if (monster.getHitPoints() >= monster.getType().getHp() && behaviourIsChanged) {
+                    monster.setState(new Agressive());
+                    behaviourIsChanged = !behaviourIsChanged;
+                }
+
+                monster.doAction();
 
                 if (!monster.shouldChasePlayer()) {
                     switch (random.nextInt(4)) {
