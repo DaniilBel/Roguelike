@@ -244,29 +244,34 @@ public class Engine implements Runnable {
             } else if (pickMonster instanceof ReplicationMonster monster) {
                 int p = random.nextInt(100);
                 final int STEP = 16;
-                if (p >= 50) {
+                if (p >= 75) {
                     switch(random.nextInt(4)) {
                         case 0:
                             if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX() + STEP, monster.getY()));
+                                monster.setPos(monster.getX()+STEP, monster.getY());
                                 break;
                             }
                         case 1:
                             if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX() - STEP, monster.getY()));
+                                monster.setPos(monster.getX()-STEP, monster.getY());
                                 break;
                             }
                         case 2:
                             if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX(), monster.getY() + STEP));
+                                monster.setPos(monster.getX(), monster.getY()+STEP);
                                 break;
                             }
                         case 3:
                             if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX(), monster.getY() - STEP));
+                                monster.setPos(monster.getX(), monster.getY()-STEP);
                                 break;
                             }
                     }
+                    break;
                 }
 
                 if(checkCollision(monster.getX()+1, monster.getY(), person.getX(), person.getY())) {
