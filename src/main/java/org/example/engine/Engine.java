@@ -249,25 +249,25 @@ public class Engine implements Runnable {
                         case 0:
                             if(Objects.equals(getFrontTile(monster, 1, 0).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX() + STEP, monster.getY()));
-                                monster.setPos(monster.getX()+STEP, monster.getY());
+//                                monster.setPos(monster.getX()+STEP, monster.getY());
                                 break;
                             }
                         case 1:
                             if(Objects.equals(getFrontTile(monster, -1, 0).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX() - STEP, monster.getY()));
-                                monster.setPos(monster.getX()-STEP, monster.getY());
+//                                monster.setPos(monster.getX()-STEP, monster.getY());
                                 break;
                             }
                         case 2:
                             if(Objects.equals(getFrontTile(monster, 0, 1).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX(), monster.getY() + STEP));
-                                monster.setPos(monster.getX(), monster.getY()+STEP);
+//                                monster.setPos(monster.getX(), monster.getY()+STEP);
                                 break;
                             }
                         case 3:
                             if(Objects.equals(getFrontTile(monster, 0, -1).getTag(), "floor")) {
 //                                monsters.add(monster.copy(monster.getX(), monster.getY() - STEP));
-                                monster.setPos(monster.getX(), monster.getY()-STEP);
+//                                monster.setPos(monster.getX(), monster.getY()-STEP);
                                 break;
                             }
                     }
