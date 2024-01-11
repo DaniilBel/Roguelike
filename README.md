@@ -1,7 +1,7 @@
 ### Внешний вид данной версии
-![Alt text](img/roguelike1.PNG?raw=true "Game")
+![Alt text](img/roguelike1.JPG?raw=true "Game")
 
-![Alt text](img/roguelike2.PNG?raw=true "Game")
+![Alt text](img/roguelike2.JPG?raw=true "Game")
 
 Управление производится стрелками
 
