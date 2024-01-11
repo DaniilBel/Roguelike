@@ -39,7 +39,7 @@ public class GameWindow extends JPanel {
                 Thread.sleep(1);
                 render.renderLevel(Engine.getCurrentFloor(), Engine.getPerson(), g);
                 render.renderPlayer(Engine.getPerson(), g);
-                render.renderMonsters(Engine.getMonsters(), Engine.getPerson(), g);
+                render.renderMonsters(Engine.getMonsters(), Engine.getReplicators(), Engine.getPerson(), g);
             }
 
         } catch (Exception e) {

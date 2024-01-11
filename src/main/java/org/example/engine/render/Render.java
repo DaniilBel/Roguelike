@@ -14,10 +14,13 @@ import org.example.engine.Tile;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Render {
 
     private int zoom;
+    private static Iterator<MonsterFactory> monsterIterator;
+    private static Iterator<ReplicationMonster> replicatorsIterator;
 
     public Render() {
         this.zoom = 2;
@@ -54,23 +57,38 @@ public class Render {
         }
     }
 
-    public void renderMonsters(ArrayList<MonsterFactory> monsters, Person person, Graphics g) {
+    public void renderMonsters(ArrayList<MonsterFactory> monsters, ArrayList<ReplicationMonster> rm, Person person, Graphics g) {
         if (monsters == null) return;
 
-        for (MonsterFactory pickMonster : monsters) {
+        monsterIterator = monsters.iterator();
+        replicatorsIterator = rm.iterator();
+
+        while(monsterIterator.hasNext()) {
+            MonsterFactory pickMonster = monsterIterator.next();
+
             if (pickMonster instanceof Monster m) {
 
                 BufferedImage sprite = Resources.getSprite(m.getTag());
-                int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
-                int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
+                int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX() * zoom;
+                int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY() * zoom;
                 if (m.getHitPoints() > 0)
-                    g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth()*zoom, sprite.getHeight()*zoom, null);
-            } else if (pickMonster instanceof ReplicationMonster m) {
-                BufferedImage sprite = Resources.getSprite(m.getTag());
-                int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
-                int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
-                g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth()*zoom, sprite.getHeight()*zoom, null);
+                    g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth() * zoom, sprite.getHeight() * zoom, null);
+//            } else if (pickMonster instanceof ReplicationMonster m) {
+//                BufferedImage sprite = Resources.getSprite(m.getTag());
+//                int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
+//                int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
+//                g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth()*zoom, sprite.getHeight()*zoom, null);
+//            }
             }
+        }
+
+        while(replicatorsIterator.hasNext()) {
+            ReplicationMonster m = replicatorsIterator.next();
+
+            BufferedImage sprite = Resources.getSprite(m.getTag());
+            int drawPosX = offsetX(sprite, m, person) - m.getMotionOffsetX()*zoom;
+            int drawPosY = offsetY(sprite, m, person) - m.getMotionOffsetY()*zoom;
+            g.drawImage(sprite, drawPosX, drawPosY, sprite.getWidth()*zoom, sprite.getHeight()*zoom, null);
         }
     }
 
