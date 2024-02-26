@@ -307,7 +307,7 @@ public class Engine implements Runnable {
      * @return игрок умер или нет
      */
     private static boolean isPlayerDied() {
-        if (stateIsAlive && person.getHitPoints() <= 0) {
+        if (person.getHitPoints() <= 0) {
             stateIsAlive = false;
             System.out.println("You died");
             return true;
